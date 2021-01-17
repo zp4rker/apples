@@ -1,32 +1,33 @@
 package customConsole
 
-import org.fusesource.jansi.AnsiConsole
+import net.dv8tion.jda.api.JDABuilder
+import net.dv8tion.jda.api.events.ReadyEvent
+import net.dv8tion.jda.api.hooks.AnnotatedEventManager
+import net.dv8tion.jda.api.hooks.SubscribeEvent
+import org.slf4j.LoggerFactory
 import java.io.PrintStream
-import java.lang.StringBuilder
+import java.lang.IllegalStateException
 
 /**
  * @author zp4rker
  */
 fun main() {
-    val old = System.out
-    val log = StringBuilder()
-
-    System.setOut(object : PrintStream(System.out) {
-        override fun write(buf: ByteArray, off: Int, len: Int) {
-            super.write(buf, off, len)
-            val out = String(buf).substring(0, len)
-            if (out != "\n") log.append("wrote $out\n")
+    val readyListener = object {
+        @SubscribeEvent
+        fun onReady(e: ReadyEvent) {
+            with(LoggerFactory.getLogger("test")) {
+                info("hi")
+                warn("this is a warning!")
+                error("oh no!!!", IllegalStateException("THIS IS SO WRONG"))
+            }
+            e.jda.shutdownNow()
         }
-    })
+    }
 
-    println("a really long string")
-    println("test")
-    println(1)
-    println(false)
-
-    System.setOut(old)
-
-    println(log)
+    with(JDABuilder.createLight(System.getenv("TOKEN"))) {
+        setEventManager(AnnotatedEventManager())
+        addEventListeners(readyListener)
+    }.build()
 
     /*AnsiConsole.systemInstall()
     ConsoleThread().start()*/

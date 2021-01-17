@@ -8,11 +8,15 @@ version '0.0.0-dev'
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib"
     compile "org.fusesource.jansi:jansi:2.1.1"
+
+    compile "net.dv8tion:JDA:4.2.0_227"
+    compile "ch.qos.logback:logback-classic:1.2.3"
 }
 
 jar {
