@@ -40,7 +40,7 @@ fun main() {
     with(JDABuilder.createLight(System.getenv("TOKEN"))) {
         setEventManager(AnnotatedEventManager())
         addEventListeners(readyListener)
-    }/*.build()*/
+    }.build()
 }
 
 private fun linedText(original: String): String {

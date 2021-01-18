@@ -61,6 +61,8 @@ class LogInterceptor : TurboFilter() {
             }
 
             println(this)
+
+            if (message == "Finished Loading!") println()
         }
 
         return FilterReply.DENY
