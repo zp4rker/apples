@@ -15,10 +15,10 @@ fun main() {
     val readyListener = object {
         @SubscribeEvent
         fun onReady(e: ReadyEvent) {
-            with(LoggerFactory.getLogger("test")) {
-                info("hi")
-                warn("this is a warning!")
-                error("oh no!!!", IllegalStateException("THIS IS SO WRONG"))
+            with(LoggerFactory.getLogger("pyra")) {
+                for (i in 0..5) info("h${"i".repeat(i)}")
+                info("h${"i".repeat(6)}")
+                for (i in 5 downTo 0) info("h${"i".repeat(i)}")
             }
             e.jda.shutdownNow()
         }

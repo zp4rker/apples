@@ -19,7 +19,7 @@ class LogInterceptor : TurboFilter() {
 
         val nameRaw = logger.name.run { split(".").getOrElse(2) { this } }.run {
             when {
-                length > 6 -> "${this.substring(0..3)}.."
+                length > 7 -> "${this.substring(0..4)}.."
                 length < 4 -> "$this\t"
                 else -> this
             }
@@ -39,17 +39,29 @@ class LogInterceptor : TurboFilter() {
             }
         } ?: "No message"
 
-        val name = Ansi.ansi().reset().fgBrightBlack().a(nameRaw).reset()
-        val lvlString = when (lvl) {
-            Level.INFO -> Ansi.ansi().fgGreen().a(lvl.levelStr).reset()
-            Level.DEBUG, Level.TRACE -> Ansi.ansi().fgBlack().a(lvl.levelStr).reset()
-            Level.WARN -> Ansi.ansi().fgYellow().a(lvl.levelStr).reset()
-            Level.ERROR -> Ansi.ansi().fgDefault().bgRed().a(lvl.levelStr).reset()
-            else -> Ansi.ansi().fgDefault().a(lvl.levelStr).reset()
-        }
+        with(Ansi.ansi()) {
+            reset()
 
-        println("$name\t$lvlString\t$message")
-        t?.let { println("$name\t${Ansi.ansi().fgDefault().bgRed().a("STACK").reset()}\t${it.stackTraceToString()}") }
+            fgBrightBlack()
+            a("$nameRaw\t")
+
+            when (lvl) {
+                Level.INFO -> fgGreen()
+                Level.WARN -> fgYellow()
+                Level.ERROR -> bgBrightRed().fgDefault()
+                else -> fgBlack()
+            }
+            a(lvl.levelStr)
+
+            reset()
+            a("\t$message")
+
+            if (t != null) {
+                a("\n${t.stackTraceToString()}")
+            }
+
+            println(this)
+        }
 
         return FilterReply.DENY
     }
