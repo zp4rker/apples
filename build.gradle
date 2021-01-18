@@ -13,15 +13,19 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib"
+
     compile "org.fusesource.jansi:jansi:2.1.1"
 
     compile "net.dv8tion:JDA:4.2.0_227"
     compile "ch.qos.logback:logback-classic:1.2.3"
+
+    compile "io.leego:banana:2.0.0"
 }
 
 jar {
     manifest {
         attributes "Main-Class": "customConsole.CustomConsoleKt"
+        attributes "Implementation-Version": project.version
     }
 }
 

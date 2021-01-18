@@ -46,9 +46,9 @@ class LogInterceptor : TurboFilter() {
             a("$nameRaw\t")
 
             when (lvl) {
-                Level.INFO -> fgGreen()
-                Level.WARN -> fgYellow()
-                Level.ERROR -> bgBrightRed().fgDefault()
+                Level.INFO -> fgBrightGreen()
+                Level.WARN -> fgBrightYellow()
+                Level.ERROR -> fgBrightRed()
                 else -> fgBlack()
             }
             a(lvl.levelStr)
