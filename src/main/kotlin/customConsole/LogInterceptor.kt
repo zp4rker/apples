@@ -6,6 +6,11 @@ import ch.qos.logback.classic.turbo.TurboFilter
 import ch.qos.logback.core.spi.FilterReply
 import org.fusesource.jansi.Ansi
 import org.slf4j.Marker
+import java.io.File
+import java.time.OffsetDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
  * @author zp4rker
@@ -60,12 +65,33 @@ class LogInterceptor : TurboFilter() {
                 a("\n${t.stackTraceToString()}")
             }
 
-            println(this)
+            log(this)
 
-            if (message == "Finished Loading!") println()
+            if (message == "Finished Loading!") log()
         }
 
         return FilterReply.DENY
+    }
+
+    companion object {
+        fun log(output: Any = "") {
+            if (output.toString().contains("\n")) {
+                output.toString().split("\n").forEach(::log)
+                return
+            }
+
+            println(output)
+
+            val logOut = output.toString().replace(Regex("\u001B\\[[;\\d]*m"), "")
+
+            val logFile = File("logs/log.txt").also { if (!it.exists()) it.createNewFile() }
+            val timestamp = if (logOut != "") {
+                "[${OffsetDateTime.now(ZoneId.systemDefault()).format(DateTimeFormatter.ofLocalizedTime(FormatStyle.MEDIUM))}] \t"
+            } else {
+                ""
+            }
+            logFile.appendText("$timestamp$logOut\n")
+        }
     }
 
 }
