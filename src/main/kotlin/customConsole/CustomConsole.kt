@@ -72,7 +72,7 @@ private fun linedText(original: String): String {
     return components(original).joinToString("\n")
 }
 
-fun archive(file: File) {
+fun archive(file: File, deleteOriginal: Boolean = true) {
     if (!file.parentFile.exists()) file.parentFile.mkdir()
     if (!file.exists()) return
 
@@ -98,5 +98,5 @@ fun archive(file: File) {
         it.write(bytes)
     }
 
-    file.delete()
+    if (deleteOriginal) file.delete()
 }
