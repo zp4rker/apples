@@ -7,17 +7,12 @@ import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.events.ReadyEvent
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager
 import net.dv8tion.jda.api.hooks.SubscribeEvent
-import org.fusesource.jansi.Ansi
 import org.fusesource.jansi.AnsiConsole
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.io.PrintStream
 import java.time.Instant
-import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
-import java.util.*
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 
@@ -52,6 +47,8 @@ fun main() {
         setEventManager(AnnotatedEventManager())
         addEventListeners(readyListener)
     }.build()
+
+    ConsoleThread().start()
 }
 
 private fun linedText(original: String): String {
