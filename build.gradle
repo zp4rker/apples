@@ -20,11 +20,14 @@ dependencies {
     compile "ch.qos.logback:logback-classic:1.2.3"
 
     compile "io.leego:banana:2.0.0"
+
+    compile "org.json:json:20201115"
+    compile "org.bitcoinj:bitcoinj-core:0.15.9"
 }
 
 jar {
     manifest {
-        attributes "Main-Class": "customConsole.CustomConsoleKt"
+        attributes "Main-Class": "privatebinPaste.PrivatebinKt"
         attributes "Implementation-Version": project.version
     }
 }
