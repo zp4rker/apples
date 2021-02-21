@@ -21,6 +21,24 @@ private val timeEq = eqOfTime()
 
 fun main() {
     val dhuhrTime = 12 + longitudeDiff + timeEq / 60
+    val fajrTime = dhuhrTime - angleToTime(method.fajrAngle)
+    val asrTime = run {
+        val delta = sunDeclination()
+        var x = dsin(location.latitude) * dsin(delta) + dcos(location.latitude) * dcos(delta)
+        val a = atan(x / sqrt(-x * x + 1))
+        x = 1 + (1 / tan(a))
+        dhuhrTime + angleToTime(90 - (180 / Math.PI) * (atan(x) + 2 * atan(1f)))
+    }
+    val maghrebTime = angleToTime(90.8333)
+    val ishaTime = dhuhrTime + angleToTime(method.ishaAngle)
+
+    println("""
+        Fajr time -> ${hoursToTime(fajrTime)}
+        Ẓuhr time -> ${hoursToTime(dhuhrTime)}
+        'Asr time -> ${hoursToTime(asrTime)}
+        Maghrib time -> ${hoursToTime(maghrebTime)}
+        'Ishā time -> ${hoursToTime(ishaTime)}
+    """.trimIndent())
 }
 
 private fun getJulianDay(date: OffsetDateTime = OffsetDateTime.now()): Float {
@@ -55,9 +73,16 @@ private fun eqOfTime(jd: Float = jDay): Double {
 private fun dsin(deg: Double): Double = sin((deg * Math.PI) / 180)
 private fun dcos(deg: Double): Double = cos((deg * Math.PI) / 180)
 
-private fun angleToTime(angle: Double) {
+private fun angleToTime(angle: Double): Double {
     val delta = sunDeclination()
-    // TODO: Continue here
+    val s = (dcos(angle) - dsin(location.latitude) * dsin(delta)) / (dcos(location.latitude) * dcos(delta))
+    return (180 / Math.PI * (atan(-s / sqrt(-s * s + 1)) + Math.PI / 2)) / 15
+}
+
+private fun hoursToTime(hours: Double): OffsetDateTime {
+    val h = hours / 3600
+    val m = (hours - floor(hours)) * 60
+    return OffsetDateTime.now().withHour(h.toInt()).withMinute(m.toInt())
 }
 
 private fun sunDeclination(jd: Float = jDay): Double {
