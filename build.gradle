@@ -23,11 +23,16 @@ dependencies {
 
     compile "org.json:json:20201115"
     compile "org.bitcoinj:bitcoinj-core:0.15.9"
+
+    compile "org.reflections:reflections:0.9.12"
+
+    compile "io.ktor:ktor-server-core:1.5.1"
+    compile "io.ktor:ktor-server-netty:1.5.1"
 }
 
 jar {
     manifest {
-        attributes "Main-Class": "privatebinPaste.PrivatebinKt"
+        attributes "Main-Class": "random.ReflectionsTestKt"
         attributes "Implementation-Version": project.version
     }
 }
