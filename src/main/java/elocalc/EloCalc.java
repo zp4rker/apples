@@ -17,4 +17,14 @@ public class EloCalc {
         return new int[]{winner, loser};
     }
 
+    private void example() {
+        int winnerElo = 1500;
+        int loserElo = 2000;
+
+        int[] result = calculateElos(winnerElo, loserElo);
+
+        winnerElo = result[0];
+        loserElo = result[1];
+    }
+
 }
